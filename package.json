@@ -1,0 +1,31 @@
+{
+  "name": "bamazon",
+  "version": "1.0.0",
+  "description": "Bamazon-Node, MySQL knockoff app",
+  "main": "app.js",
+  "dependencies": {
+    "easy-table": "^1.1.0",
+    "inquirer": "^3.1.1",
+    "mysql": "^2.13.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/leelandmiller/bamazon.git"
+  },
+  "keywords": [
+    "bamazon",
+    "node",
+    "nodejs",
+    "mysql"
+  ],
+  "author": "LeelandMiller",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/leelandmiller/bamazon/issues"
+  },
+  "homepage": "https://github.com/leelandmiller/bamazon#readme"
+}
