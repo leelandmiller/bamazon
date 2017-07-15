@@ -3,6 +3,8 @@ const inq = require('inquirer');
 const Table = require('easy-table');
 
 const customerView = require('./Customer');
+const managerView = require('./Manager');
+const supervisorView = require('./Supervisor');
 
 let connection = mysql.createConnection({
     host: 'localhost',
@@ -20,7 +22,7 @@ let initialize = () => {
             'type': 'list',
             'message': 'Customer, Admin, Supervisor?',
             'name': 'userType',
-            'choices': ['Customer', 'Admin', 'Supervisor']
+            'choices': ['Customer', 'Manager', 'Supervisor']
         }
     ]).then((answers) => {
         console.log(answers.userType)
@@ -31,7 +33,13 @@ let initialize = () => {
                     connection.end();
                 })
                 break;
-            case 'Admin':
+            case 'Manager':
+                managerView();
+                connection.end();
+                break;
+            case 'Supervisor':
+                supervisorView();
+                connection.end();
                 break;
         }
     });

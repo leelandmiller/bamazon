@@ -26,7 +26,16 @@ CREATE TABLE ordered_products (
     quantity INT NOT NULL
 );
 
+CREATE TABLE departments (
+	department_id INT NOT NULL,
+    department_name VARCHAR(100) NOT NULL,
+    overhead INT NOT NULL,
+    primary key(department_id)
+);
 
+ALTER TABLE products DROP COLUMN product_sales;
+
+ALTER TABLE products ADD COLUMN product_sales INT NOT NULL DEFAULT 0;
 
 SELECT * FROM products;
 SELECT * FROM orders;

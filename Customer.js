@@ -97,7 +97,7 @@ TOTAL: $${ShoppingCart.total}
             // UPATE ShoppingCart total & items
             ShoppingCart.total += data[0].price * item.quantity;
             let newCartItem = data[0];
-            newCartItem.quantity = item.quantity;
+            newCartItem.quantity = parseInt(item.quantity);
             ShoppingCart.items.push(newCartItem);
             showCart();
             checkoutPrompt();
@@ -130,6 +130,7 @@ TOTAL: $${ShoppingCart.total}
     let checkout = () => {
         // show order details, pass in true to meet ternary conditional in showCart()
         showCart(true);
+
         // update orders TABLE -- INSERT total, id is AUTO INCREMENTING
         let totalInsert = [ ShoppingCart.total ];
         let totalInsertQuery = 'INSERT INTO orders (total) VALUES (?)';
@@ -145,6 +146,15 @@ TOTAL: $${ShoppingCart.total}
                     if (err) throw err;
                 });
             });
+        });
+        let inserts = [];
+        let prodSalesQuery = 'UPDATE products SET product_sales = product_sales + ? WHERE id = ?';
+
+        ShoppingCart.items.forEach((item) => {
+            inserts.push( (item.quantity * item.price), item.id);
+            connection.query(prodSalesQuery, inserts, (err, res) => {
+                if (err) throw err;
+            })
         });
     };
 };
