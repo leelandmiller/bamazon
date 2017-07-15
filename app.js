@@ -2,7 +2,7 @@ const mysql = require('mysql');
 const inq = require('inquirer');
 const Table = require('easy-table');
 
-const customerView = require('./bamazonCustomer');
+const customerView = require('./Customer');
 
 let connection = mysql.createConnection({
     host: 'localhost',
@@ -30,6 +30,8 @@ let initialize = () => {
                     customerView();
                     connection.end();
                 })
+                break;
+            case 'Admin':
                 break;
         }
     });

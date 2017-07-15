@@ -20,5 +20,10 @@ CREATE TABLE orders (
     PRIMARY KEY(id)
 );
 
+CREATE TABLE ordered_products (
+	order_id INT NOT NULL,
+    prod_id INT NOT NULL
+);
+
 SELECT * FROM products;
 SELECT * FROM orders;

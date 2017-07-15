@@ -60,8 +60,6 @@ let customerView = () => {
             newQty -= item.quantity;
             // UPDATE db inventory
             updateInventory(item, newQty);
-            // TODO: Update OrderTotal
-
         } else {
             // order didn't go through. order qty higher than actual inventory amount
             console.log('Not enough in stock');
@@ -96,7 +94,7 @@ TOTAL: $${ShoppingCart.total}
         let insert = [parseInt(item.id)];
         connection.query('SELECT id,product,department,price FROM products WHERE id = ?', insert, (err, data) => {
 
-            //
+            // UPATE ShoppingCart total & items
             ShoppingCart.total += data[0].price;
             ShoppingCart.items.push(data[0]);
             showCart();
@@ -121,30 +119,32 @@ TOTAL: $${ShoppingCart.total}
                     productSelection(res);
                 });
             } else {
-                // checkout -- show them all items they've ordered and the total cost
                 checkout();
-                // add their order to orders TABLE
-
             }
         });
     };
 
+    // checkout -- show them all items they've ordered and the total cost
     let checkout = () => {
-        // show order details,
+        // show order details, pass in true to meet ternary conditional in showCart()
         showCart(true);
-        // update orders TABLE
+        // update orders TABLE -- INSERT total, id is AUTO INCREMENTING
         let totalInsert = [ ShoppingCart.total ];
-        let totalInsertQuery = 'INSERT into orders (total) VALUES (?)';
-
+        let totalInsertQuery = 'INSERT INTO orders (total) VALUES (?)';
         connection.query(totalInsertQuery, totalInsert, (err, res) => {
             if (err) throw err;
-            // console.log(res);
-            connection.end((error) => {
-                console.log(error);
+
+            let prodsInsert = ShoppingCart.items.map(item => [res.insertId, item.id]);
+            let prodsInsertQuery = 'INSERT INTO ordered_products (order_id, prod_id) VALUES ?';
+
+            // INSERT product_id's and associated order_id to ordered_products table
+            connection.query(prodsInsertQuery, [prodsInsert], (err, res) => {
+                connection.end((error) => {
+                    if (err) throw err;
+                });
             });
         });
     };
 };
-
 
 module.exports =  customerView;
