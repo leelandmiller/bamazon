@@ -95,8 +95,10 @@ TOTAL: $${ShoppingCart.total}
         connection.query('SELECT id,product,department,price FROM products WHERE id = ?', insert, (err, data) => {
 
             // UPATE ShoppingCart total & items
-            ShoppingCart.total += data[0].price;
-            ShoppingCart.items.push(data[0]);
+            ShoppingCart.total += data[0].price * item.quantity;
+            let newCartItem = data[0];
+            newCartItem.quantity = item.quantity;
+            ShoppingCart.items.push(newCartItem);
             showCart();
             checkoutPrompt();
         });
@@ -134,8 +136,8 @@ TOTAL: $${ShoppingCart.total}
         connection.query(totalInsertQuery, totalInsert, (err, res) => {
             if (err) throw err;
 
-            let prodsInsert = ShoppingCart.items.map(item => [res.insertId, item.id]);
-            let prodsInsertQuery = 'INSERT INTO ordered_products (order_id, prod_id) VALUES ?';
+            let prodsInsert = ShoppingCart.items.map(item => [res.insertId, item.id, item.quantity]);
+            let prodsInsertQuery = 'INSERT INTO ordered_products (order_id, prod_id, quantity) VALUES ?';
 
             // INSERT product_id's and associated order_id to ordered_products table
             connection.query(prodsInsertQuery, [prodsInsert], (err, res) => {

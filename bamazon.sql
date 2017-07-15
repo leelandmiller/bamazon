@@ -22,8 +22,12 @@ CREATE TABLE orders (
 
 CREATE TABLE ordered_products (
 	order_id INT NOT NULL,
-    prod_id INT NOT NULL
+    prod_id INT NOT NULL,
+    quantity INT NOT NULL
 );
+
+
 
 SELECT * FROM products;
 SELECT * FROM orders;
+SELECT * FROM ordered_products;
