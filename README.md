@@ -5,6 +5,9 @@ Bamazon is a CLI Amazon-like storefront utilizing MySQL and Node.js
 
 ### To Run:
 ```npm install```
+
+Open and run `bamazon.sql` to create the MySQL database and create the necessary tables.
+
 ##### Entry Point:
 Run command `node app.js` to start the application.
 
